@@ -16,34 +16,12 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-
-const packageConfig = require('./package');
-
-const importCoreModules = [];
-Object.entries(packageConfig.dependencies).forEach(([pkg]) => {
-  if (/@superset-ui/.test(pkg)) {
-    importCoreModules.push(pkg);
-  }
-});
-
-// ignore files when running ForkTsCheckerWebpackPlugin
-let ignorePatterns = [];
-if (process.env.NODE_ENV === 'production') {
-  ignorePatterns = [
-    '*.test.{js,ts,jsx,tsx}',
-    'plugins/**/test/**/*',
-    'packages/**/test/**/*',
-    'packages/generator-superset/**/*',
-  ];
-}
-
 module.exports = {
   extends: [
     'airbnb',
     'prettier',
     'prettier/react',
     'plugin:react-hooks/recommended',
-    'plugin:react-prefer-function-component/recommended',
   ],
   parser: '@babel/eslint-parser',
   parserOptions: {
@@ -55,25 +33,12 @@ module.exports = {
     browser: true,
   },
   settings: {
-    'import/resolver': {
-      webpack: {},
-      node: {
-        extensions: ['.js', '.jsx', '.ts', '.tsx', '.json'],
-      },
-    },
-    // Allow only core/src and core/test, avoid import modules from lib
-    'import/internal-regex': /^@superset-ui\/core\/(src|test)\/.*/,
-    'import/core-modules': importCoreModules,
+    'import/resolver': 'webpack',
     react: {
       version: 'detect',
     },
   },
-  plugins: [
-    'prettier',
-    'react',
-    'file-progress',
-    'react-prefer-function-component',
-  ],
+  plugins: ['prettier', 'react', 'file-progress'],
   overrides: [
     {
       files: ['cypress-base/**/*'],
@@ -102,14 +67,8 @@ module.exports = {
         'prettier',
         'prettier/@typescript-eslint',
         'prettier/react',
-        'plugin:react-prefer-function-component/recommended',
       ],
-      plugins: [
-        '@typescript-eslint/eslint-plugin',
-        'prettier',
-        'react',
-        'react-prefer-function-component',
-      ],
+      plugins: ['@typescript-eslint/eslint-plugin', 'prettier', 'react'],
       rules: {
         '@typescript-eslint/ban-ts-ignore': 0,
         '@typescript-eslint/ban-ts-comment': 0, // disabled temporarily
@@ -117,11 +76,11 @@ module.exports = {
         '@typescript-eslint/no-empty-function': 0,
         '@typescript-eslint/no-explicit-any': 0,
         '@typescript-eslint/no-use-before-define': 1, // disabled temporarily
-        '@typescript-eslint/no-non-null-assertion': 0, // disabled temporarily
         '@typescript-eslint/explicit-function-return-type': 0,
         '@typescript-eslint/explicit-module-boundary-types': 0, // re-enable up for discussion
         camelcase: 0,
         'class-methods-use-this': 0,
+        curly: 1,
         'func-names': 0,
         'guard-for-in': 0,
         'import/no-cycle': 0, // re-enable up for discussion, might require some major refactors
@@ -171,7 +130,6 @@ module.exports = {
         'padded-blocks': 0,
         'prefer-arrow-callback': 0,
         'prefer-destructuring': ['error', { object: true, array: false }],
-        'react-prefer-function-component/react-prefer-function-component': 1,
         'react/destructuring-assignment': 0, // re-enable up for discussion
         'react/forbid-prop-types': 0,
         'react/jsx-filename-extension': [1, { extensions: ['.jsx', '.tsx'] }],
@@ -212,11 +170,11 @@ module.exports = {
     },
     {
       files: [
-        '*.test.ts',
-        '*.test.tsx',
-        '*.test.js',
-        '*.test.jsx',
-        'fixtures.*',
+        'src/**/*.test.ts',
+        'src/**/*.test.tsx',
+        'src/**/*.test.js',
+        'src/**/*.test.jsx',
+        'src/**/fixtures.*',
       ],
       plugins: ['jest', 'jest-dom', 'no-only-tests', 'testing-library'],
       env: {
@@ -237,28 +195,9 @@ module.exports = {
           'error',
           { devDependencies: true },
         ],
-        'no-only-tests/no-only-tests': 'error',
-        'max-classes-per-file': 0,
-        '@typescript-eslint/no-non-null-assertion': 0,
-        // TODO: disabled temporarily, re-enable after monorepo
         'jest/consistent-test-it': 'error',
-        'jest/expect-expect': 0,
-        'jest/no-test-prefixes': 0,
-        'jest/valid-expect-in-promise': 0,
-        'jest/valid-expect': 0,
-        'jest/valid-title': 0,
-        'jest-dom/prefer-to-have-attribute': 0,
-        'jest-dom/prefer-to-have-text-content': 0,
-        'jest-dom/prefer-to-have-style': 0,
-      },
-    },
-    {
-      files: './packages/generator-superset/**/*.test.*',
-      env: {
-        node: true,
-      },
-      rules: {
-        'jest/expect-expect': 0,
+        'no-only-tests/no-only-tests': 'error',
+        '@typescript-eslint/no-non-null-assertion': 0,
       },
     },
   ],
@@ -271,7 +210,7 @@ module.exports = {
       },
     ],
     'class-methods-use-this': 0,
-    curly: 2,
+    curly: 1,
     'func-names': 0,
     'guard-for-in': 0,
     'import/extensions': [
@@ -314,7 +253,6 @@ module.exports = {
     'no-shadow': 0, // re-enable up for discussion
     'padded-blocks': 0,
     'prefer-arrow-callback': 0,
-    'react-prefer-function-component/react-prefer-function-component': 1,
     'prefer-object-spread': 1,
     'prefer-destructuring': ['error', { object: true, array: false }],
     'react/destructuring-assignment': 0, // re-enable up for discussion
@@ -333,5 +271,4 @@ module.exports = {
     'react/static-property-placement': 0, // disabled temporarily
     'prettier/prettier': 'error',
   },
-  ignorePatterns,
 };
