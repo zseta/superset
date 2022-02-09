@@ -17,7 +17,7 @@
  * under the License.
  */
 import shortid from 'shortid';
-import { DatasourceType, JsonObject, QueryFormData } from '@superset-ui/core';
+import { DatasourceType, JsonObject, QueryFormData, isFeatureEnabled, FeatureFlag } from '@superset-ui/core';
 import {
   ControlStateMapping,
   DatasourceMeta,
@@ -67,7 +67,10 @@ export default function getInitialState(
     sliceName,
     common: {
       flash_messages: bootstrapData.common.flash_messages,
-      conf: bootstrapData.common.conf,
+      conf: {
+        ...bootstrapData.common.conf, 
+        "ENABLE_JAVASCRIPT_CONTROLS": isFeatureEnabled(FeatureFlag.ENABLE_JAVASCRIPT_CONTROLS)
+      },
     },
     isDatasourceMetaLoading: false,
     isStarred: false,
