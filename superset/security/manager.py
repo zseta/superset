@@ -1132,13 +1132,17 @@ class SupersetSecurityManager(  # pylint: disable=too-many-public-methods
         :return: A list of filters
         """
         guest_user = self.get_current_guest_user_if_guest()
+        logging.warning(f"!debugging! get_guest_rls_filters guest user: {guest_user}")
+        logging.warning(f"!debugging! get_guest_rls_filters g.user: {g.user}")
         if guest_user:
-            return [
+            rules = [
                 rule
                 for rule in guest_user.rls
                 if not rule.get("dataset")
                 or str(rule.get("dataset")) == str(dataset.id)
             ]
+            logging.warning(f"!debugging! get_guest_rls_filters rules: {rules}")
+            return rules
         return []
 
     def get_rls_filters(self, table: "BaseDatasource") -> List[SqlaQuery]:
