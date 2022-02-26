@@ -994,12 +994,12 @@ class SqlaTable(Model, BaseDatasource):  # pylint: disable=too-many-public-metho
             logging.warning(
                 f"!debugging! _get_sqla_row_level_filters feature flag: {is_embedded}"
             )
-            if is_embedded:
-                for rule in security_manager.get_guest_rls_filters(self):
-                    clause = self.text(
-                        f"({template_processor.process_template(rule['clause'])})"
-                    )
-                    all_filters.append(clause)
+            # if is_embedded:
+            for rule in security_manager.get_guest_rls_filters(self):
+                clause = self.text(
+                    f"({template_processor.process_template(rule['clause'])})"
+                )
+                all_filters.append(clause)
 
             grouped_filters = [or_(*clauses) for clauses in filter_groups.values()]
             all_filters.extend(grouped_filters)
@@ -1358,8 +1358,12 @@ class SqlaTable(Model, BaseDatasource):  # pylint: disable=too-many-public-metho
                         raise QueryObjectValidationError(
                             _("Invalid filter operation type: %(op)s", op=op)
                         )
-        if is_feature_enabled("ROW_LEVEL_SECURITY"):
-            where_clause_and += self._get_sqla_row_level_filters(template_processor)
+        # if is_feature_enabled("ROW_LEVEL_SECURITY"):
+        is_rls = is_feature_enabled("ROW_LEVEL_SECURITY")
+        logging.warning(
+            f"!debugging! _get_sqla_query feature flag (ROW_LEVEL_SECURITY): {is_rls}"
+        )
+        where_clause_and += self._get_sqla_row_level_filters(template_processor)
         if extras:
             where = extras.get("where")
             if where:
