@@ -21,7 +21,7 @@ class TimescaleDbEngineSpec(PostgresEngineSpec):
     engine = "timescaledb"
     engine_name = "TimescaleDB"
 
-    """_time_grain_expressions = {
+    _time_grain_expressions = {
         None: "{col}",
         "PT1S": "time_bucket('1 sec', {col})",
         "PT5S": "time_bucket('5 sec', {col})",
@@ -30,4 +30,4 @@ class TimescaleDbEngineSpec(PostgresEngineSpec):
         "PT1H": "time_bucket('hour', {col})",
         "P1D": "time_bucket('day', {col})",
         "P1W": "time_bucket('week', {col})",
-    }"""
+    }
