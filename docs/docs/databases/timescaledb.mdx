@@ -1,0 +1,37 @@
+---
+title: TimescaleDB
+hide_title: true
+sidebar_position: 16
+version: 1
+---
+
+## TimescaleDB
+
+TimescaleDB uses the same connector library as PostgreSQL: [psycopg2](https://www.psycopg.org/docs/).
+
+If you're using docker-compose, psycopg2 comes out of the box with Superset.
+
+TimescaleDB sample connection parameters:
+
+- **User Name**: tsdbadmin
+- **Password**: passwd
+- **Database Host**:
+  - For Localhost: localhost or 127.0.0.1
+  - For On Prem: IP address or Host name
+  - For Timescale Cloud: xxxxxxxxxx.xxxxxxxxxx.tsdb.cloud.timescale.com
+- **Database Name**: tsdb
+- **Port**: 5432
+
+The connection string looks like this:
+
+```
+timescaledb://{username}:{password}@{host}:{port}/{database}
+```
+
+If you use Timescale CLoud, SSL is required:
+
+```
+timescaledb://{username}:{password}@{host}:{port}/{database}?sslmode=require
+```
+
+[Learn more about TimescaleDB!](https://docs.timescale.com/)
