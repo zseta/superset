@@ -152,6 +152,7 @@ setup(
         "pinot": ["pinotdb>=0.3.3, <0.4"],
         "postgres": ["psycopg2-binary==2.9.1"],
         "presto": ["pyhive[presto]>=0.4.0"],
+        "timescale": ["psycopg2-binary==2.9.1"],
         "trino": ["trino>=0.313.0"],
         "prophet": ["prophet>=1.0.1, <1.1", "pystan<3.0"],
         "redshift": ["sqlalchemy-redshift>=0.8.1, < 0.9"],
